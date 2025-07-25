@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          String       @id @default(uuid())
+  title       String
+  description String
+  image       String
+  url         String       @unique
+  category    String       @default("")
+  isFeatured  Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  techStack   TechStack[]
+}
+
+model TechStack {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  projects  Project[]
+}
+
