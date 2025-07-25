@@ -4,6 +4,9 @@ import importPlugin from 'eslint-plugin-import';
 
 export default [
   {
+    ignores: ['src/generated/**']
+  },
+  {
     files: ['**/*.js'],
     languageOptions: {
       ecmaVersion: 'latest',
