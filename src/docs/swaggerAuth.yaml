@@ -1,0 +1,60 @@
+tags:
+  - name: Authentication
+    description: Endpoints related to user login and authentication
+
+paths:
+  /auth/login:
+    post:
+      summary: Login and receive a JWT token
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: admin@mateo.dev
+                password:
+                  type: string
+                  format: password
+                  example: 123456
+      responses:
+        200:
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT access token
+        400:
+          $ref: "#/components/responses/ValidationError"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+components:
+  responses:
+    Unauthorized:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Unauthorized
+              message:
+                type: string
+                example: Invalid credentials

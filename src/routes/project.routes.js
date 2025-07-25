@@ -9,13 +9,29 @@ import {
   createProjectLimiter,
   singleProjectLimiter
 } from '../middlewares/rateLimiter.js';
+import { validateAuth } from '../middlewares/validateAuth.js';
+import { validateAdmin } from '../middlewares/validateAdmin.js';
 
 const router = Router();
 
 router.get('/', generalLimiter, ProjectController.getAll);
 router.get('/:id', validateId, singleProjectLimiter, ProjectController.getById);
-router.post('/', createProjectLimiter, validate(ProjectSchema), ProjectController.create);
-router.put('/:id', validateId, validate(ProjectSchema), ProjectController.update);
-router.delete('/:id', validateId, ProjectController.remove);
+router.post(
+  '/',
+  validateAuth,
+  validateAdmin,
+  createProjectLimiter,
+  validate(ProjectSchema),
+  ProjectController.create
+);
+router.put(
+  '/:id',
+  validateAuth,
+  validateAdmin,
+  validateId,
+  validate(ProjectSchema),
+  ProjectController.update
+);
+router.delete('/:id', validateAuth, validateAdmin, validateId, ProjectController.remove);
 
 export default router;

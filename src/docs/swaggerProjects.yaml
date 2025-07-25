@@ -1,0 +1,251 @@
+tags:
+  - name: Projects
+    description: Endpoints to manage portfolio projects
+
+paths:
+  /projects:
+    get:
+      summary: Get all projects
+      tags: [Projects]
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            example: 1
+          description: Page number
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            example: 10
+          description: Number of items per page
+        - in: query
+          name: search
+          schema:
+            type: string
+            example: portfolio
+          description: Filter by title, description, category or tech stack
+        - in: query
+          name: sort
+          schema:
+            type: string
+            example: title
+          description: Field to sort by (e.g., title, category)
+        - in: query
+          name: order
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+          description: Sort direction
+      responses:
+        200:
+          description: List of projects
+        500:
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      summary: Create a new project
+      security:
+        - bearerAuth: []
+      tags: [Projects]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectInput"
+      responses:
+        201:
+          description: Project created
+        400:
+          $ref: "#/components/responses/ValidationError"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+  /projects/{id}:
+    get:
+      summary: Get a project by ID
+      tags: [Projects]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Project retrieved successfully
+        400:
+          $ref: "#/components/responses/InvalidId"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+    put:
+      summary: Update a project by ID
+      security:
+        - bearerAuth: []
+      tags: [Projects]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectInput"
+      responses:
+        200:
+          description: Project updated
+        400:
+          $ref: "#/components/responses/ValidationError"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+    delete:
+      summary: Delete a project by ID
+      security:
+        - bearerAuth: []
+      tags: [Projects]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Project deleted
+        400:
+          $ref: "#/components/responses/InvalidId"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+components:
+  schemas:
+    ProjectInput:
+      type: object
+      required:
+        - title
+        - description
+        - image
+        - url
+        - techStack
+        - category
+      properties:
+        title:
+          type: string
+          example: Portfolio Website
+        description:
+          type: string
+          example: A modern personal portfolio built with React and Tailwind.
+        image:
+          type: string
+          format: uri
+          example: https://example.com/preview.jpg
+        url:
+          type: string
+          format: uri
+          example: https://myportfolio.com
+        techStack:
+          type: array
+          items:
+            type: string
+          example: [React, Node.js, PostgreSQL]
+        category:
+          type: string
+          example: Fullstack
+        isFeatured:
+          type: boolean
+          example: true
+
+  responses:
+    ValidationError:
+      description: Invalid input data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: ValidationError
+              message:
+                type: string
+                example: "Invalid input data"
+
+    InvalidId:
+      description: Malformed or invalid ID
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: InvalidId
+              message:
+                type: string
+                example: "ID must be a valid UUID"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: NotFoundError
+              message:
+                type: string
+                example: Project not found
+
+    Unauthorized:
+      description: Unauthorized - missing or invalid token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Unauthorized
+              message:
+                type: string
+                example: Invalid or expired token
+
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: InternalError
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

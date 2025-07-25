@@ -27,7 +27,7 @@ export default [
           'newlines-between': 'always'
         }
       ],
-      'no-console': ['warn', { allow: ['warn', 'error', 'log'] }]
+      'no-console': ['warn', { allow: ['error', 'log'] }]
     }
   }
 ];
