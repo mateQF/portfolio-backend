@@ -217,7 +217,7 @@ components:
                 example: NotFoundError
               message:
                 type: string
-                example: Project not found
+                example: Resource not found
 
     Unauthorized:
       description: Unauthorized - missing or invalid token
