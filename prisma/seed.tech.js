@@ -3,23 +3,20 @@ import { PrismaClient } from '../src/generated/prisma/index.js';
 const prisma = new PrismaClient();
 
 const techStacks = [
-  'React',
-  'Node.js',
-  'Express',
-  'PostgreSQL',
-  'Prisma',
-  'Tailwind CSS',
-  'JavaScript',
-  'TypeScript'
+  { name: 'React', category: 'frontend' },
+  { name: 'Node.js', category: 'backend' },
+  { name: 'Express', category: 'backend' },
+  { name: 'PostgreSQL', category: 'database' },
+  { name: 'Prisma', category: 'orm' },
+  { name: 'Tailwind CSS', category: 'frontend' },
+  { name: 'JavaScript', category: 'language' },
+  { name: 'TypeScript', category: 'language' }
 ];
 
 async function main() {
-  for (const name of techStacks) {
-    await prisma.techStack.upsert({
-      where: { name },
-      update: {},
-      create: { name }
-    });
+  await prisma.techStack.deleteMany();
+  for (const stack of techStacks) {
+    await prisma.techStack.create({ data: stack });
   }
 }
 

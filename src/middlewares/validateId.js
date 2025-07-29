@@ -6,12 +6,20 @@ export const validateId = (req, res, next) => {
     req.params = IdParamSchema.parse(req.params);
     next();
   } catch (err) {
+    const errorDetails =
+      err.errors?.map((e) => ({
+        path: e.path.join('.'),
+        message: e.message
+      })) || [];
+
     logger.error(
-      `400 InvalidId - ${err.errors?.[0]?.message || 'Invalid ID'} in ${req.method} ${req.originalUrl}`
+      `400 Invalid Id in ${req.method} ${req.originalUrl} - ` +
+        errorDetails.map((e) => `${e.path}: ${e.message}`).join(' | ')
     );
+
     return res.status(400).json({
       error: 'InvalidId',
-      message: err.errors?.[0]?.message || 'Invalid ID'
+      message: errorDetails
     });
   }
 };

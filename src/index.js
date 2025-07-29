@@ -6,6 +6,7 @@ import morgan from 'morgan';
 
 import projectRouter from './routes/project.routes.js';
 import authRouter from './routes/auth.routes.js';
+import techRouter from './routes/techstack.routes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { swaggerSpec } from './config/swagger.js';
 
@@ -17,10 +18,11 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use('/api/auth', authRouter);
 app.use('/api/projects', projectRouter);
+app.use('/api/tech', techRouter);
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get('/', (_req, res) => {
-  res.send('<h1>OK!</h1>');
+  res.send('<h1>0K!</h1>');
 });
 app.use(errorHandler);
 

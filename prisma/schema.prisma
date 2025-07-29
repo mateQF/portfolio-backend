@@ -31,5 +31,6 @@ model Project {
 model TechStack {
   id       String    @id @default(uuid())
   name     String    @unique
+  category String
   projects Project[]
 }
