@@ -16,9 +16,7 @@ dotenv.config();
 const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
-
 applySecurityMiddleware(app);
-
 app.use('/api/auth', authRouter);
 app.use('/api/projects', projectRouter);
 app.use('/api/tech', techRouter);
