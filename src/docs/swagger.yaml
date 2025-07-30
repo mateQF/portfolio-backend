@@ -1,0 +1,401 @@
+openapi: 3.0.0
+info:
+  title: Portfolio API
+  version: 1.0.0
+  description: Professional Portfolio API Documentation
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local server
+
+tags:
+  - name: Authentication
+    description: Endpoints related to user login and authentication
+  - name: Projects
+    description: Endpoints to manage portfolio projects
+  - name: TechStack
+    description: Endpoints to manage technologies used in your portfolio
+  - name: Health
+    description: Healthcheck route
+
+paths:
+  /auth/login:
+    post:
+      summary: Login and receive a JWT token
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: admin@mateo.dev
+                password:
+                  type: string
+                  format: password
+                  example: 123456
+      responses:
+        200:
+          description: Login successful
+        400:
+          $ref: "#/components/responses/ValidationError"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+  /projects:
+    get:
+      summary: Get all projects
+      tags: [Projects]
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            example: 1
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            example: 10
+        - in: query
+          name: search
+          schema:
+            type: string
+            example: portfolio
+        - in: query
+          name: sort
+          schema:
+            type: string
+            example: title
+        - in: query
+          name: order
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        200:
+          description: List of projects
+        500:
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      summary: Create a new project
+      security:
+        - bearerAuth: []
+      tags: [Projects]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectInput"
+      responses:
+        201:
+          description: Project created
+        400:
+          $ref: "#/components/responses/ValidationError"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+  /projects/{id}:
+    get:
+      summary: Get a project by ID
+      tags: [Projects]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Project retrieved successfully
+        400:
+          $ref: "#/components/responses/InvalidId"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+    put:
+      summary: Update a project by ID
+      security:
+        - bearerAuth: []
+      tags: [Projects]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectInput"
+      responses:
+        200:
+          description: Project updated
+        400:
+          $ref: "#/components/responses/ValidationError"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+    delete:
+      summary: Delete a project by ID
+      security:
+        - bearerAuth: []
+      tags: [Projects]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Project deleted
+        400:
+          $ref: "#/components/responses/InvalidId"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+  /tech:
+    get:
+      summary: Get all tech stacks
+      tags: [TechStack]
+      responses:
+        200:
+          description: List of tech stacks
+        500:
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      summary: Create a new tech stack
+      security:
+        - bearerAuth: []
+      tags: [TechStack]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TechStackInput"
+      responses:
+        201:
+          description: Tech stack created
+        400:
+          $ref: "#/components/responses/ValidationError"
+        403:
+          $ref: "#/components/responses/Forbidden"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+  /tech/{id}:
+    get:
+      summary: Get a tech stack by ID
+      tags: [TechStack]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Tech stack retrieved
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+    put:
+      summary: Update a tech stack by ID
+      security:
+        - bearerAuth: []
+      tags: [TechStack]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TechStackInput"
+      responses:
+        200:
+          description: Tech stack updated
+        400:
+          $ref: "#/components/responses/ValidationError"
+        403:
+          $ref: "#/components/responses/Forbidden"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+    delete:
+      summary: Delete tech stack by ID
+      security:
+        - bearerAuth: []
+      tags: [TechStack]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Deleted
+        403:
+          $ref: "#/components/responses/Forbidden"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+  /health:
+    get:
+      summary: API Healthcheck
+      tags: [Health]
+      responses:
+        200:
+          description: OK
+
+components:
+  schemas:
+    Project:
+      type: object
+      required: [id, title, description, image, url, techStack, category]
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 3a09e532-7a5e-4cf0-8f8e-3fdddfbcb70e
+        title:
+          type: string
+          example: Portfolio Website
+        description:
+          type: string
+          example: A modern portfolio built with React and Node.js
+        image:
+          type: string
+          format: uri
+          example: https://example.com/image.png
+        url:
+          type: string
+          format: uri
+          example: https://mateo.dev
+        techStack:
+          type: array
+          items:
+            type: string
+            example: React
+        category:
+          type: string
+          example: fullstack
+        isFeatured:
+          type: boolean
+          example: true
+
+    ProjectInput:
+      type: object
+      required: [title, description, image, url, techStack, category]
+      properties:
+        title:
+          type: string
+          example: Portfolio Website
+        description:
+          type: string
+          example: A modern portfolio built with React and Node.js
+        image:
+          type: string
+          format: uri
+          example: https://example.com/image.png
+        url:
+          type: string
+          format: uri
+          example: https://mateo.dev
+        techStack:
+          type: array
+          items:
+            type: string
+            example: React
+        category:
+          type: string
+          example: fullstack
+        isFeatured:
+          type: boolean
+          example: true
+
+    TechStack:
+      type: object
+      required: [id, name, category]
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 3a09e532-7a5e-4cf0-8f8e-3fdddfbcb70e
+        name:
+          type: string
+          example: React
+        category:
+          type: string
+          enum: [frontend, backend, database, tooling, orm, testing, language]
+          example: frontend
+
+    TechStackInput:
+      type: object
+      required: [name, category]
+      properties:
+        name:
+          type: string
+          example: React
+        category:
+          type: string
+          enum: [frontend, backend, database, tooling, orm, testing, language]
+          example: frontend
+
+  responses:
+    ValidationError:
+      description: Invalid input data
+    InvalidId:
+      description: Malformed or invalid ID
+    NotFound:
+      description: Resource not found
+    Unauthorized:
+      description: Unauthorized - missing or invalid token
+    Forbidden:
+      description: Access forbidden
+    InternalError:
+      description: Internal server error
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

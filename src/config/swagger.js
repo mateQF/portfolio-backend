@@ -10,14 +10,14 @@ const swaggerDefinition = {
   servers: [
     {
       url: 'http://localhost:3000/api',
-      description: 'Servidor local'
+      description: 'Local server'
     }
   ]
 };
 
 const options = {
   swaggerDefinition,
-  apis: ['./src/routes/*.js', './src/docs/*.yaml']
+  apis: ['./src/routes/*.js', './src/docs/swagger.yaml']
 };
 
 export const swaggerSpec = swaggerJSDoc(options);

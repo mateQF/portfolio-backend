@@ -16,5 +16,5 @@ export function applySecurityMiddleware(app) {
   app.use(cors(corsOptions));
   app.use(hpp());
   app.use(cookieParser());
-  app.use(generalLimiter); // 👈 Aplica a todas las rutas
+  app.use(generalLimiter);
 }
