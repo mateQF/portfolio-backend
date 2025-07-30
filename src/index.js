@@ -7,6 +7,7 @@ import projectRouter from './routes/project.routes.js';
 import authRouter from './routes/auth.routes.js';
 import techRouter from './routes/techstack.routes.js';
 import healthRouter from './routes/health.routes.js';
+import contactRouter from './routes/contact.routes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { swaggerSpec } from './config/swagger.js';
 import { applySecurityMiddleware } from './middlewares/security.js';
@@ -17,11 +18,12 @@ const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 applySecurityMiddleware(app);
+app.use('/api/health', healthRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/projects', projectRouter);
 app.use('/api/tech', techRouter);
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/api/health', healthRouter);
+app.use('/api/contact', contactRouter);
 
 app.get('/', (_req, res) => res.send('<h1>0K!</h1>'));
 

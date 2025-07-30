@@ -3,10 +3,15 @@ info:
   title: Portfolio API
   version: 1.0.0
   description: Professional Portfolio API Documentation
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: http://localhost:3000/api
-    description: Local server
+  - url: https://test.com/api
+    description: Production server
+  - url: http://localhost.com/api
+    description: Local development server
 
 tags:
   - name: Authentication
@@ -22,7 +27,9 @@ paths:
   /auth/login:
     post:
       summary: Login and receive a JWT token
+      operationId: loginUser
       tags: [Authentication]
+      security: []
       requestBody:
         required: true
         content:
@@ -52,6 +59,8 @@ paths:
   /projects:
     get:
       summary: Get all projects
+      operationId: getProjects
+      security: []
       tags: [Projects]
       parameters:
         - in: query
@@ -83,11 +92,20 @@ paths:
       responses:
         200:
           description: List of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+        404:
+          $ref: "#/components/responses/NotFound"
         500:
           $ref: "#/components/responses/InternalError"
 
     post:
       summary: Create a new project
+      operationId: createProject
       security:
         - bearerAuth: []
       tags: [Projects]
@@ -110,6 +128,8 @@ paths:
   /projects/{id}:
     get:
       summary: Get a project by ID
+      operationId: getProject
+      security: []
       tags: [Projects]
       parameters:
         - in: path
@@ -120,6 +140,10 @@ paths:
       responses:
         200:
           description: Project retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
         400:
           $ref: "#/components/responses/InvalidId"
         404:
@@ -129,6 +153,7 @@ paths:
 
     put:
       summary: Update a project by ID
+      operationId: updateProject
       security:
         - bearerAuth: []
       tags: [Projects]
@@ -158,6 +183,7 @@ paths:
 
     delete:
       summary: Delete a project by ID
+      operationId: deleteProject
       security:
         - bearerAuth: []
       tags: [Projects]
@@ -182,15 +208,26 @@ paths:
   /tech:
     get:
       summary: Get all tech stacks
+      operationId: getTechStacks
       tags: [TechStack]
+      security: []
       responses:
         200:
           description: List of tech stacks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TechStack"
+        404:
+          $ref: "#/components/responses/NotFound"
         500:
           $ref: "#/components/responses/InternalError"
 
     post:
       summary: Create a new tech stack
+      operationId: createTechStack
       security:
         - bearerAuth: []
       tags: [TechStack]
@@ -213,6 +250,8 @@ paths:
   /tech/{id}:
     get:
       summary: Get a tech stack by ID
+      operationId: getTechStack
+      security: []
       tags: [TechStack]
       parameters:
         - in: path
@@ -223,6 +262,10 @@ paths:
       responses:
         200:
           description: Tech stack retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TechStack"
         404:
           $ref: "#/components/responses/NotFound"
         500:
@@ -230,6 +273,7 @@ paths:
 
     put:
       summary: Update a tech stack by ID
+      operationId: updateTechStack
       security:
         - bearerAuth: []
       tags: [TechStack]
@@ -259,6 +303,7 @@ paths:
 
     delete:
       summary: Delete tech stack by ID
+      operationId: deleteTechStack
       security:
         - bearerAuth: []
       tags: [TechStack]
@@ -281,10 +326,14 @@ paths:
   /health:
     get:
       summary: API Healthcheck
+      operationId: getHealthCheck
+      security: []
       tags: [Health]
       responses:
         200:
           description: OK
+        404:
+          $ref: "#/components/responses/NotFound"
 
 components:
   schemas:

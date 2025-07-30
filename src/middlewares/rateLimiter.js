@@ -41,3 +41,13 @@ export const singleProjectLimiter = rateLimit({
     message: 'Too many requests to this project. Please wait a moment.'
   }
 });
+
+export const contactLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 30 minutos
+  max: 3,
+  handler: rateLimitHandler,
+  message: {
+    error: 'TooManyRequests',
+    message: 'Too many requests. Please wait a moment.'
+  }
+});

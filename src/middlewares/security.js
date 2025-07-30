@@ -4,6 +4,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 import { generalLimiter } from './rateLimiter.js';
+import { sanitizeInput } from './sanitizeInput.js';
 
 const corsOptions = {
   origin: '*', // front
@@ -17,4 +18,5 @@ export function applySecurityMiddleware(app) {
   app.use(hpp());
   app.use(cookieParser());
   app.use(generalLimiter);
+  app.use(sanitizeInput);
 }
