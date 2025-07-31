@@ -2,10 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import jwt from 'jsonwebtoken';
 
 vi.mock('jsonwebtoken', () => ({
-  default: {
-    sign: vi.fn(),
-    verify: vi.fn()
-  }
+  default: { sign: vi.fn(), verify: vi.fn() }
 }));
 
 import { createToken, verifyToken } from '../../utils/jwt.js';
