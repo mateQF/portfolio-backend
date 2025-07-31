@@ -1,189 +1,137 @@
 # 🧠 Portfolio Fullstack - Backend
 
-Este es el backend profesional de mi portfolio personal, desarrollado con Node.js, Express y Prisma. La API gestiona proyectos y habilidades, sigue principios SOLID, patrón de arquitectura en capas, validaciones con Zod y está lista para producción.
+Este es el backend profesional de mi portfolio personal, desarrollado con **Node.js**, **Express v5** y **Prisma ORM**. La API gestiona proyectos, tecnologías y autenticación para un panel de administración. El código sigue principios **SOLID**, una arquitectura en capas y buenas prácticas de seguridad, validación y testeo. Está listo para producción y CI/CD.
 
 ---
 
 ## 🚀 Stack Tecnológico
 
-- **Node.js** + **Express** (v5)
-- **PostgreSQL** con **Prisma ORM**
-- **Zod** para validaciones
-- **ES Modules** (`type: "module"`)
-- **Winston** para logging
+- **Node.js** + **Express v5**
+- **PostgreSQL** + **Prisma ORM**
+- **Zod** para validaciones de esquema
+- **JWT** para autenticación
+- **Helmet**, **XSS Clean**, **Rate Limiting**, **HPP** y **CORS** para seguridad
+- **Winston** para logging profesional
+- **Nodemailer** para envíos de email (contacto)
+- **Swagger** para documentación automática
+- **Vitest** + **Supertest** para testing
 - **ESLint** + **Prettier** para calidad de código
-- ✍️ Pensado para agregar:
-  - Testing con Jest + Supertest
-  - Autenticación con JWT
-  - Panel admin para gestión de datos
+- **Husky** + **lint-staged** para hooks de git
+- **CI/CD con GitHub Actions**
 
 ---
 
-## 🧱 Arquitectura del proyecto
+## 🧱 Arquitectura del Proyecto
 
 ```
 src/
-├── config/          # Configuración de Prisma y entorno
-├── controllers/     # Lógica HTTP (Express)
-├── routes/          # Definición de rutas
+├── config/          # Configuración: Prisma, Nodemailer, Swagger, etc.
+├── controllers/     # Lógica HTTP de cada entidad
+├── routes/          # Rutas de Express
 ├── services/        # Lógica de negocio
-├── repositories/    # Acceso a la base de datos (Repository Pattern)
-├── middlewares/     # Validación, errores
-├── schemas/         # Esquemas de validación con Zod
-├── utils/           # Logger, clases de error, helpers
-├── index.js         # Entry point de la API
+├── repositories/    # Acceso a base de datos con Prisma
+├── schemas/         # Validaciones Zod
+├── middlewares/     # Seguridad, validaciones, errores
+├── utils/           # Utilidades (logger, JWT, errores)
+├── index.js         # Punto de entrada del servidor
 ```
 
 ---
 
-## 📦 Instalación
+## 🔐 Funcionalidades Principales
 
-1. Clonar el proyecto
+- 🔑 **Login de administrador** con JWT
+- 📁 **Gestión de proyectos** (CRUD + destacado)
+- 💻 **Gestión de tecnologías** (CRUD por categoría)
+- 📬 **Formulario de contacto** con validación y email
+- 🛡️ Seguridad: sanitizado, rate limiting, headers seguros
+- 📈 **Logger centralizado** con Winston
+- 🧪 **Test unitarios** y de integración con cobertura
+- 🧾 Documentación Swagger (`/api/docs`)
+- 💾 Seeds iniciales: admin, tecnologías, proyectos
+
+---
+
+## 📦 Instalación y uso
 
 ```bash
-git clone https://github.com/tuusuario/portfolio-backend.git
-cd portfolio-backend
-```
+# Clonar el repositorio
+git clone https://github.com/tu-usuario/backend.git
+cd backend
 
-2. Instalar dependencias
-
-```bash
+# Instalar dependencias
 npm install
-```
 
-3. Crear archivo `.env`
+# Copiar y configurar el entorno
+cp .env.example .env
+# Editar DATABASE_URL y JWT_SECRET
 
-```env
-DATABASE_URL="postgresql://usuario:contraseña@localhost:5432/portfolio?schema=public"
-PORT=5000
-```
-
-4. Crear la base de datos y aplicar migraciones
-
-```bash
+# Migrar la base de datos
 npx prisma migrate dev --name init
-```
 
-5. (Opcional) Cargar datos de prueba
+# Generar el cliente de Prisma
+npx prisma generate
 
-```bash
-npm run seed
-```
+# Ejecutar seeds (opcional)
+npm run seed:admin
+npm run seed:techStack
+npm run seed:project
 
-6. Levantar el servidor
-
-```bash
+# Ejecutar en desarrollo
 npm run dev
 ```
 
 ---
 
-## 📡 Endpoints disponibles (módulo `projects`)
+## 🧪 Testing
 
-### 🔹 GET `/api/projects`
-Obtiene todos los proyectos con soporte de paginación, ordenamiento y búsqueda.
+```bash
+# Ejecutar tests
+npm test
 
-Query params:
-- `page` (default: 1)
-- `limit` (default: 10)
-- `sort` (por campo: `title`, `createdAt`, etc.)
-- `order` (`asc` o `desc`)
-- `search`: busca en título, descripción, categoría o tecnologías
-
-### 🔹 GET `/api/projects/:id`
-Obtiene un proyecto por ID (UUID).  
-- `400` si el ID no es UUID  
-- `404` si no se encuentra
-
-### 🔹 POST `/api/projects`
-Crea un nuevo proyecto  
-**Body (JSON):**
-```json
-{
-  "title": "Mi Proyecto",
-  "description": "Descripción",
-  "image": "https://i.imgur.com/imagen.png",
-  "url": "https://github.com/miproyecto",
-  "techStack": ["React", "PostgreSQL"],
-  "category": "Fullstack",
-  "isFeatured": true
-}
+# Generar cobertura
+npm run coverage
 ```
 
-### 🔹 PUT `/api/projects/:id`
-Actualiza un proyecto existente
-
-### 🔹 DELETE `/api/projects/:id`
-Elimina un proyecto por ID
+La cobertura se guarda en la carpeta `coverage/` e incluye un HTML visual.
 
 ---
 
-## 🛡️ Rate Limiting
+## 📄 Documentación API
 
-La API implementa protección contra abuso y spam mediante [express-rate-limit](https://www.npmjs.com/package/express-rate-limit). Las peticiones se limitan por IP con ventanas de tiempo configuradas según la criticidad del endpoint.
+Disponible en:  
+👉 [`/api/docs`](http://localhost:3000/api/docs) (Swagger UI)
 
-| Endpoint                  | Límite por IP        | Ventana de tiempo  |
-|---------------------------|----------------------|---------------------|
-| `GET /api/projects`       | 100 solicitudes      | cada 15 minutos     |
-| `GET /api/projects/:id`   | 50 solicitudes       | cada 15 minutos     |
-| `POST /api/projects`      | 10 creaciones        | cada 1 hora         |
+---
 
-Si se supera el límite, la API devuelve:
+## ⚙️ Scripts disponibles
 
-```json
-{
-  "error": "TooManyRequests",
-  "message": "Has superado el límite de peticiones. Intenta más tarde."
-}
+```bash
+npm run dev           # Inicia el servidor con nodemon
+npm run lint          # Ejecuta ESLint
+npm run format        # Ejecuta Prettier
+npm run seed:admin    # Seed para el usuario admin
+npm run seed:techStack# Seed de tecnologías
+npm run seed:project  # Seed de proyectos
+npm test              # Ejecuta los tests
+npm run coverage      # Ejecuta tests + coverage
 ```
 
 ---
 
-## ✅ Validaciones
+## 🔄 CI/CD
 
-Todos los inputs son validados con **Zod**. Si hay errores, se devuelve:
-
-```json
-{
-  "error": "ValidationError",
-  "message": "El título debe tener al menos 3 caracteres"
-}
-```
+- 🚀 **GitHub Actions** (`.github/workflows/nodejs.yml`)
+- 🛠️ **Husky**: hooks pre-commit para lint + prettier
 
 ---
 
-## 🧪 Testing (pendiente)
+## 📝 Licencia
 
-Se va a integrar Jest + Supertest para pruebas unitarias y de integración.
-
----
-
-## 🔐 Autenticación (próximamente)
-
-Se planea implementar login con JWT para proteger rutas de administración.
+MIT
 
 ---
 
-## 🧠 Buenas prácticas aplicadas
+## ✍️ Autor
 
-- ✔ Principios SOLID
-- ✔ Patrón de arquitectura en capas + repositorio
-- ✔ Validaciones seguras y tipadas
-- ✔ Logger profesional
-- ✔ Linter + Prettier
-- ✔ Código limpio y modular
-- ✔ Preparado para escalar
-
----
-
-## 🧑‍💻 Autor
-
-Mateo Fortuna  
-[LinkedIn](https://www.linkedin.com/in/mateo-fortuna-aa2a09230/)  
-[GitHub](https://github.com/mateqf)
-
----
-
-## 📄 Licencia
-
-Este proyecto está bajo la licencia MIT.
+Hecho por [Tu nombre o usuario](https://github.com/tu-usuario)

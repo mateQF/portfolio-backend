@@ -50,11 +50,11 @@ paths:
         200:
           description: Login successful
         400:
-          $ref: "#/components/responses/ValidationError"
+          $ref: '#/components/responses/ValidationError'
         401:
-          $ref: "#/components/responses/Unauthorized"
+          $ref: '#/components/responses/Unauthorized'
         500:
-          $ref: "#/components/responses/InternalError"
+          $ref: '#/components/responses/InternalError'
 
   /projects:
     get:
@@ -97,11 +97,11 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Project"
+                  $ref: '#/components/schemas/Project'
         404:
-          $ref: "#/components/responses/NotFound"
+          $ref: '#/components/responses/NotFound'
         500:
-          $ref: "#/components/responses/InternalError"
+          $ref: '#/components/responses/InternalError'
 
     post:
       summary: Create a new project
@@ -114,16 +114,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ProjectInput"
+              $ref: '#/components/schemas/ProjectInput'
       responses:
         201:
           description: Project created
         400:
-          $ref: "#/components/responses/ValidationError"
+          $ref: '#/components/responses/ValidationError'
         401:
-          $ref: "#/components/responses/Unauthorized"
+          $ref: '#/components/responses/Unauthorized'
         500:
-          $ref: "#/components/responses/InternalError"
+          $ref: '#/components/responses/InternalError'
 
   /projects/{id}:
     get:
@@ -143,13 +143,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Project"
+                $ref: '#/components/schemas/Project'
         400:
-          $ref: "#/components/responses/InvalidId"
+          $ref: '#/components/responses/InvalidId'
         404:
-          $ref: "#/components/responses/NotFound"
+          $ref: '#/components/responses/NotFound'
         500:
-          $ref: "#/components/responses/InternalError"
+          $ref: '#/components/responses/InternalError'
 
     put:
       summary: Update a project by ID
@@ -168,18 +168,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ProjectInput"
+              $ref: '#/components/schemas/ProjectInput'
       responses:
         200:
           description: Project updated
         400:
-          $ref: "#/components/responses/ValidationError"
+          $ref: '#/components/responses/ValidationError'
         401:
-          $ref: "#/components/responses/Unauthorized"
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: "#/components/responses/NotFound"
+          $ref: '#/components/responses/NotFound'
         500:
-          $ref: "#/components/responses/InternalError"
+          $ref: '#/components/responses/InternalError'
 
     delete:
       summary: Delete a project by ID
@@ -197,13 +197,13 @@ paths:
         204:
           description: Project deleted
         400:
-          $ref: "#/components/responses/InvalidId"
+          $ref: '#/components/responses/InvalidId'
         401:
-          $ref: "#/components/responses/Unauthorized"
+          $ref: '#/components/responses/Unauthorized'
         404:
-          $ref: "#/components/responses/NotFound"
+          $ref: '#/components/responses/NotFound'
         500:
-          $ref: "#/components/responses/InternalError"
+          $ref: '#/components/responses/InternalError'
 
   /tech:
     get:
@@ -219,11 +219,11 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/TechStack"
+                  $ref: '#/components/schemas/TechStack'
         404:
-          $ref: "#/components/responses/NotFound"
+          $ref: '#/components/responses/NotFound'
         500:
-          $ref: "#/components/responses/InternalError"
+          $ref: '#/components/responses/InternalError'
 
     post:
       summary: Create a new tech stack
@@ -236,16 +236,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TechStackInput"
+              $ref: '#/components/schemas/TechStackInput'
       responses:
         201:
           description: Tech stack created
         400:
-          $ref: "#/components/responses/ValidationError"
+          $ref: '#/components/responses/ValidationError'
         403:
-          $ref: "#/components/responses/Forbidden"
+          $ref: '#/components/responses/Forbidden'
         500:
-          $ref: "#/components/responses/InternalError"
+          $ref: '#/components/responses/InternalError'
 
   /tech/{id}:
     get:
@@ -265,11 +265,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TechStack"
+                $ref: '#/components/schemas/TechStack'
         404:
-          $ref: "#/components/responses/NotFound"
+          $ref: '#/components/responses/NotFound'
         500:
-          $ref: "#/components/responses/InternalError"
+          $ref: '#/components/responses/InternalError'
 
     put:
       summary: Update a tech stack by ID
@@ -288,18 +288,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TechStackInput"
+              $ref: '#/components/schemas/TechStackInput'
       responses:
         200:
           description: Tech stack updated
         400:
-          $ref: "#/components/responses/ValidationError"
+          $ref: '#/components/responses/ValidationError'
         403:
-          $ref: "#/components/responses/Forbidden"
+          $ref: '#/components/responses/Forbidden'
         404:
-          $ref: "#/components/responses/NotFound"
+          $ref: '#/components/responses/NotFound'
         500:
-          $ref: "#/components/responses/InternalError"
+          $ref: '#/components/responses/InternalError'
 
     delete:
       summary: Delete tech stack by ID
@@ -317,11 +317,11 @@ paths:
         204:
           description: Deleted
         403:
-          $ref: "#/components/responses/Forbidden"
+          $ref: '#/components/responses/Forbidden'
         404:
-          $ref: "#/components/responses/NotFound"
+          $ref: '#/components/responses/NotFound'
         500:
-          $ref: "#/components/responses/InternalError"
+          $ref: '#/components/responses/InternalError'
 
   /health:
     get:
@@ -333,7 +333,7 @@ paths:
         200:
           description: OK
         404:
-          $ref: "#/components/responses/NotFound"
+          $ref: '#/components/responses/NotFound'
 
 components:
   schemas:

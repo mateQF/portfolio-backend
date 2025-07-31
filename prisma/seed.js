@@ -24,11 +24,17 @@ const projects = [
 ];
 
 async function main() {
+  await prisma.project.deleteMany();
   for (const project of projects) {
     await prisma.project.upsert({
       where: { url: project.url },
       update: {},
-      create: project
+      create: {
+        ...project,
+        techStack: {
+          connect: [{ name: 'React' }, { name: 'Node.js' }]
+        }
+      }
     });
   }
 }

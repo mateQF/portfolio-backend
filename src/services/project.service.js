@@ -13,7 +13,7 @@ export const ProjectService = {
       search
     });
   },
-  
+
   getById: async (id) => {
     const project = await ProjectRepository.findById(id);
     if (!project) throw new NotFoundError('Proyecto no encontrado');
