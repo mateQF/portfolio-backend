@@ -1,4 +1,4 @@
-import prisma from '../generated/prisma/index.js';
+import prisma from '../config/prisma.js';
 
 export const TechStackRepository = {
   findAll: () => prisma.techStack.findMany(),

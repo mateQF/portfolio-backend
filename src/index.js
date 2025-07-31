@@ -26,6 +26,7 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/contact', contactRouter);
 
 app.get('/', (_req, res) => res.send('<h1>0K!</h1>'));
+app.get('/test', (_req, res) => res.send('ok'));
 
 app.use(errorHandler);
 
