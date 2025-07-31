@@ -56,7 +56,7 @@ src/
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/tu-usuario/backend.git
+git clone https://github.com/mateQF/portfolio-backend.git
 cd backend
 
 # Instalar dependencias
@@ -107,14 +107,14 @@ Disponible en:
 ## ⚙️ Scripts disponibles
 
 ```bash
-npm run dev           # Inicia el servidor con nodemon
-npm run lint          # Ejecuta ESLint
-npm run format        # Ejecuta Prettier
-npm run seed:admin    # Seed para el usuario admin
-npm run seed:techStack# Seed de tecnologías
-npm run seed:project  # Seed de proyectos
-npm test              # Ejecuta los tests
-npm run coverage      # Ejecuta tests + coverage
+npm run dev            # Inicia el servidor con nodemon
+npm run lint           # Ejecuta ESLint
+npm run format         # Ejecuta Prettier
+npm run seed:admin     # Seed para el usuario admin
+npm run seed:techStack # Seed de tecnologías
+npm run seed:project   # Seed de proyectos
+npm test               # Ejecuta los tests
+npm run coverage       # Ejecuta tests + coverage
 ```
 
 ---
@@ -134,4 +134,4 @@ MIT
 
 ## ✍️ Autor
 
-Hecho por [Tu nombre o usuario](https://github.com/tu-usuario)
+Hecho por [mateQF](https://github.com/mateQF)
